@@ -1,5 +1,5 @@
 """
-Django settings for EGT_QUIZZ (Phase 1: backend + Admin).
+Django settings for EGT_QUIZZ (Phase 1 Admin + Phase 2 DRF API).
 
 Este módulo es el "cerebro" de configuración: apps instaladas, BD, auth,
 i18n, estáticos, etc. Se carga vía DJANGO_SETTINGS_MODULE (ver manage.py).
@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",  # flash messages
     "django.contrib.staticfiles",  # CSS/JS/imágenes
     # Third-party
-    "rest_framework",  # DRF instalado; API scoring = Phase 2
+    "rest_framework",  # DRF: listado + scoring en /api/ (Phase 2)
     # Local apps
     "trivia",
     "accounts",
@@ -102,8 +102,18 @@ STATIC_URL = "static/"  # prefijo URL de archivos estáticos en desarrollo
 # PK por defecto global si el AppConfig/modelo no define otra.
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# DRF is installed for Phase 2; keep a minimal default config for now.
+# DRF (Phase 2): auth + permisos por defecto.
+# Assumptions / Supuestos:
+# - SessionAuthentication: Admin, browsable API y tests con cliente de sesión.
+# - BasicAuthentication: clientes simples / curl en desarrollo.
+# - Toda la API exige IsAuthenticated; POST /api/respuestas/ y GET /api/perfil/
+#   además requieren HasStudentProfile (ver trivia.permissions).
+# - Token/JWT para Ionic se añade en Phase 3; no hace falta cambiar vistas.
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
