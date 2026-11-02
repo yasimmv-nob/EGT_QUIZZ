@@ -1,10 +1,27 @@
 """
-Tests de la app `accounts` (vacío en Phase 1).
+Tests de `accounts`.
 
-Cubrir PerfilEstudiante y, más adelante, scoring / rachas vía API.
-Ejecutar: `python manage.py test accounts`
+La lógica de scoring vive en `trivia.scoring` / `trivia.tests` (Phase 2).
+Aquí solo smoke del modelo de perfil.
 """
 
-from django.test import TestCase  # noqa: F401 — placeholder Django startapp
+from django.contrib.auth import get_user_model
+from django.test import TestCase
 
-# Create your tests here.
+from accounts.models import PerfilEstudiante
+from trivia.choices import GradoEscolar
+
+User = get_user_model()
+
+
+class PerfilEstudianteModelTests(TestCase):
+    def test_str_includes_username_and_points(self):
+        user = User.objects.create_user(username="ana", password="pass12345")
+        perfil = PerfilEstudiante.objects.create(
+            usuario=user,
+            grado=GradoEscolar.SEGUNDO_BASICO,
+            puntos=15,
+        )
+        text = str(perfil)
+        self.assertIn("ana", text)
+        self.assertIn("15", text)
