@@ -1,11 +1,17 @@
-"""Shared choice constants for Chilean school grades (currículo escolar)."""
+"""
+Constantes compartidas de grados escolares chilenos (currículo escolar).
+
+TextChoices define pares (valor_en_BD, etiqueta_legible). Se reutilizan
+en CharField(choices=...) de Pregunta y PerfilEstudiante.
+"""
 
 from django.db import models
 
 
 class GradoEscolar(models.TextChoices):
-    """Chilean grades from 1° básico through 4° medio."""
+    """Chilean grades from 1° básico through 4° medio. / Códigos cortos → etiqueta UI."""
 
+    # Sintaxis: NOMBRE = "valor_db", "etiqueta mostrada"
     PRIMERO_BASICO = "1B", "1° básico"
     SEGUNDO_BASICO = "2B", "2° básico"
     TERCERO_BASICO = "3B", "3° básico"

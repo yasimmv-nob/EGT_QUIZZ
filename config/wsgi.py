@@ -1,16 +1,15 @@
 """
-WSGI config for config project.
+WSGI entrypoint (servidores sync: gunicorn, runserver).
 
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
+`application` es el callable que el servidor web invoca por request.
+DJANGO_SETTINGS_MODULE debe apuntar a config.settings.
+Docs: https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 """
 
 import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 application = get_wsgi_application()
